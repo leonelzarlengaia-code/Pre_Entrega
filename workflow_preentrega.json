@@ -1,0 +1,717 @@
+{
+  "name": "PRE ENTREGA 2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -48
+      ],
+      "id": "386a6684-9c03-4273-af3f-c47613539d05",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        224,
+        -48
+      ],
+      "id": "2b90333e-1380-423d-b444-5177044ccfa9",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xTEjgqqsJDFiBcQ2",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "39e74b66-19d5-430c-807b-99338c82f0be",
+              "leftValue": "={{ $json.bitcoin.usd }}",
+              "rightValue": 67000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        -48
+      ],
+      "id": "5a8c3fed-51d0-477a-a833-6c0a61fa2260",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f58894a3-1cf0-49b2-a13d-75350a16b66a",
+              "leftValue": "={{ $json.bitcoin.usd }}",
+              "rightValue": 66950,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        144
+      ],
+      "id": "a834e52f-8a63-4bff-b70f-024189c63dab",
+      "name": "bajando"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.bitcoin.usd }}",
+                    "rightValue": 68500,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    },
+                    "id": "586c7c92-92bc-487b-b014-8425ef6f47b2"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "68500"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5835c45c-ac09-43ab-a0f1-ff7ec338fcb3",
+                    "leftValue": "={{ $json.bitcoin.usd }}",
+                    "rightValue": 69000,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "69000"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "54eff35a-6be5-45c2-a0ea-04d0b11b3889",
+                    "leftValue": "={{ $json.bitcoin.usd }}",
+                    "rightValue": 72000,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "72000"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        -352
+      ],
+      "id": "67426407-aa9d-4402-913e-ec6d9ebf2c89",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "xleonelxx@gmail.com",
+        "subject": "={{ $json.bitcoin.usd }}:Alerta de Mercado: Bitcoin en baja {{ $json.bitcoin.usd }} VENDER SI O SI\n",
+        "message": "s",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        240
+      ],
+      "id": "d4222dc9-8851-4495-b6a1-0e710ea9fc8c",
+      "name": "Baja de 66500 vender si o si ",
+      "webhookId": "288815d4-0772-4134-8e03-6a7940b4f89f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aZ9vzQ3oXNNYaQiX",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "xleonelxx@gmail.com",
+        "subject": "={{ $json.bitcoin.usd }}:Alerta de Mercado: Bitcoin en baja {{ $json.bitcoin.usd }} ",
+        "message": "BAJANDO ESTAR ATENTON",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        48
+      ],
+      "id": "5f823a93-57cf-4532-b757-92670143098a",
+      "name": "BAJANDO ATENCION",
+      "webhookId": "82d22dbc-1439-4c16-bf85-4a603cbba476",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aZ9vzQ3oXNNYaQiX",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "xleonelxx@gmail.com",
+        "subject": "=SUBIENDO LENTO  {{ $json.bitcoin.usd }}",
+        "message": "=SUBIENDO ATENCION  {{ $json.bitcoin.usd }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        -528
+      ],
+      "id": "442ec2dc-74f8-4be0-8498-239f966b25de",
+      "name": "subiendo",
+      "webhookId": "11ec048f-89b8-4f83-9f8e-0bee0d173449",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aZ9vzQ3oXNNYaQiX",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "xleonelxx@gmail.com",
+        "subject": "=SUBIENDO  {{ $json.bitcoin.usd }}",
+        "message": "=SUBIENDO ATENCION  {{ $json.bitcoin.usd }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        -336
+      ],
+      "id": "57ba284a-7099-4e86-88a5-a2803fc2d9da",
+      "name": "ATENTO",
+      "webhookId": "11ec048f-89b8-4f83-9f8e-0bee0d173449",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aZ9vzQ3oXNNYaQiX",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "xleonelxx@gmail.com",
+        "subject": "=VENDER  {{ $json.bitcoin.usd }}",
+        "message": "=  {{ $json.bitcoin.usd }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        -144
+      ],
+      "id": "68c18e0c-e31c-42fb-9ca4-d5e6534dce26",
+      "name": "VENDER",
+      "webhookId": "11ec048f-89b8-4f83-9f8e-0bee0d173449",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aZ9vzQ3oXNNYaQiX",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        -192
+      ],
+      "id": "129db481-24b9-4e8b-8028-c7774d27d88f",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1X7FH-MuOHjxXvRudt9sGkm59nJX6rv2kSQFrikeI-jU",
+          "mode": "list",
+          "cachedResultName": "PRUEBAS BITCOIN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X7FH-MuOHjxXvRudt9sGkm59nJX6rv2kSQFrikeI-jU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X7FH-MuOHjxXvRudt9sGkm59nJX6rv2kSQFrikeI-jU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "currentDate"
+          ],
+          "schema": [
+            {
+              "id": "currentDate",
+              "displayName": "currentDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1568,
+        -144
+      ],
+      "id": "98133831-75a7-441b-8358-ca5988bd57b3",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Y8YPrbr81u7W773g",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        -144
+      ],
+      "id": "9139be2b-20dd-4017-b9ea-fa143154642a",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1792,
+        -144
+      ],
+      "id": "78b1b1e1-72dc-45e2-9377-fb5310d0f6b7",
+      "name": "List data tables"
+    },
+    {
+      "parameters": {
+        "content": "Trigger Schedule configurado que se active cada 1 hora\n",
+        "height": 96,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -160
+      ],
+      "id": "669b558e-3de6-4e09-9ed7-36884fe3a851",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "HTTP Request en formato GET, a una API publica de COIN GECKO usando BITCOIN como ejemplo. Con autentificacion basica",
+        "width": 198,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -224
+      ],
+      "id": "37fb3e6f-aa52-4d4f-bbcf-886f11cceb51",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "IF configurado para decidir si el valor esta subiendo o bajando. Usando el numero de bitcoin con una referencia. ",
+        "height": 176,
+        "width": 150,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -240
+      ],
+      "id": "749b3636-edfa-4b9b-af53-6058124b0d3c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "IF Configurado para 2 opciones de aviso por MAIL. \n1 con una \"bajada mas drastica\" con una aviso de necesidad de vender y otro con un aviso en formato de alerta. ",
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        16
+      ],
+      "id": "fce0be2f-5d37-44f2-a6eb-f771da159a07",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Switch configurado con 3 salidas que tiene 3 avisos diferentes. Por los valores del bitcoin. Configurado con valor de \"Less\" para enviar el aviso si baja del valor que subio. ",
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -480
+      ],
+      "id": "9944b1c9-8400-4bdc-a9a9-9ec145490802",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "Mails configurados con credenciales de 0AUTH2 de Gmail API. \nEn este caso tiene mails diferenciados segun los valores. En formato de alerta.",
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        832,
+        -704
+      ],
+      "id": "d43e6628-d597-45bc-a4f8-2143f9c1c985",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "En este ejemplo  configure los mails asi para tener multiple respuestas. Pero con un Agente de IA, se podria reducir todos estos mails a 1 solo. ",
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        832,
+        448
+      ],
+      "id": "00920be4-25fd-442d-8e34-d4f6b8e10295",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "Merge utilizado para agrupar las salidas de los mails y crear un aviso de que el workflow funciono en un Sheet de google.",
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        -320
+      ],
+      "id": "e78a5217-26a8-478b-bf6e-dcb420100869",
+      "name": "Sticky Note7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "bajando",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bajando": {
+      "main": [
+        [
+          {
+            "node": "BAJANDO ATENCION",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Baja de 66500 vender si o si ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "subiendo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ATENTO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "VENDER",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "List data tables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "subiendo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ATENTO": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "VENDER": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "BAJANDO ATENCION": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Baja de 66500 vender si o si ": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "66f2895c-0e2d-460c-98c9-f93828efface",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a41b3ea76dcf202075f633987e73881437a6809802d930f143b2ddffbf3b56d9"
+  },
+  "id": "JCEugmIXNFC8K6mEaNiLp",
+  "tags": []
+}
